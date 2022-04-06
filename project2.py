@@ -3,29 +3,58 @@ from tkinter import messagebox
 
 grades = Tk()
 grades.title("Grades - 1155")
-all_grades = {"Art": [], "History": [], "Math": [], "Programming": [], "Science": []}
+#Arrary created with each class in mind to hold the grades for each class
+all_grades = [[], [], [], [], []]
 
-def callError(digit):
-    messagebox.showwarning(title=None, message=digit + " is invalid\nQuantity must be a float!")
+def checkIfInRange(value):
+    if value == "":
+        value = 0
+
+    if 0 <= float(value) and float(value) <= 100:
+        return True
+    return False
 
 #Input: value of the box that's being edited
 #Output: True if the value is an float and not negative, False will throw an error if not an float
 def checkIfFloat(value):
     for digit in value:
         if not (digit.isdigit() or digit == "."):
-            callError(digit)
+            messagebox.showwarning(title=None, message=digit + " is invalid\nQuantity must be a float!")
             return False
-    return True
 
-#Input: All stringvar versions of number of items purchased
-#Appends each days total to the all_orders array which is used to create the totals segment of the window
-def processGrade(score):
-    grade = round(float(score[1].get()))
-    for digit in score[1].get():
-        if not (digit.isdigit() or digit == "."):
-            grade = 0
-    all_grades[score[0]].append(grade)
-    print(all_grades)
+    if checkIfInRange(value):
+        return True
+    messagebox.showwarning(title=None, message="Quantity must be between 0 and 100")
+    return False
+
+def createOutputs():
+    classes_list = ["Art", "History", "Math", "Programming", "Science"]
+    
+    lbl_spacer = Label(text="\t")
+    lbl_spacer.grid(column=2, row=0)
+
+    for i, v in enumerate(all_grades):
+        newLabel = Label(text=classes_list[i] + " - Grades Entered: " + str(len(v)) + " - Average Grade: " + str(round(float(sum(v)/len(v)))) + " - High Grade: " + str(max(v)) + " - Low Grade: " + str(min(v)))
+        newLabel.grid(column = 3, row=i, sticky="W")
+    
+#Input: List of grades as stringvars
+#Loops through all grades and resets them to 0
+def resetStringVars(grades):
+    for grade in grades:
+        grade.set("0")
+
+#Input: All stringvar versions of number of grades
+#Appends each grade to all_grades to create a list of all class's grades
+def processGrades(grades):
+    for i, grade in enumerate(grades):
+        for digit in grade.get():
+            if not (digit.isdigit() or digit == "."):
+                grade = 0
+        grade = float(grade.get())
+        
+        all_grades[i].append(grade)
+    resetStringVars(grades)
+    createOutputs()
 
 
 #Creates the main GUI for the student
@@ -40,12 +69,10 @@ def createGradesScreen():
         newEntry["validatecommand"] = (newEntry.register(checkIfFloat),'%P')
         newEntry.grid(column=1, row=i)
 
-    #createTotals()
-
-    btn_calculate = Button(text="Calculate", command= lambda: processGrade([inp_class.get(inp_class.curselection()[0]), grade]))
+    btn_calculate = Button(text="Calculate", command= lambda: processGrades(grades))
     btn_calculate.grid(column=0, row=7, columnspan=5, sticky="NWES")
 
-    btn_clear = Button(text="Clear")
+    btn_clear = Button(text="Clear", command=lambda: resetStringVars(grades))
     btn_clear.grid(column=0, row=8, columnspan=5, sticky="NWES")
 
     btn_exit = Button(text="Exit", command=exit)
