@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-from turtle import width
 
 register = Tk()
 register.title("Register - 1155")
@@ -32,16 +31,12 @@ def processPurchase(values):
     print(order)
     createRegisterScreen()
 
-#Input: All string vars
+#Input: Array with all stringvars
 #Output: None
-#Takes all string vars and turns them back into 0
-def resetStringVars(dogs, brats, burgers, fries, sodas, waters):
-    dogs.set("0")
-    brats.set("0")
-    burgers.set("0")
-    fries.set("0")
-    sodas.set("0")
-    waters.set("0")
+#Iterates through items and resets their values
+def resetStringVars(items):
+    for item in items:
+        item.set("0")
 
 #Creates the screen which will display totals
 def createTotals():
@@ -58,23 +53,9 @@ def createTotals():
         lbl_spacer = Label(text="\t")
         lbl_spacer.grid(column=2, row=0)
 
-        lbl_hot_dogs = Label(text="Hot Dogs: " + str(condensed_orders[0][0]) + " - Total Cost: $" + str(condensed_orders[0][1]))
-        lbl_hot_dogs.grid(column=3, row=0, sticky="W")
-
-        lbl_brats = Label(text="Brats: " + str(condensed_orders[1][0]) + " - Total Cost: $" + str(condensed_orders[1][1]))
-        lbl_brats.grid(column=3, row=1, sticky="W")
-
-        lbl_burgers = Label(text="Hamburgers: " + str(condensed_orders[2][0]) + " - Total Cost: $" + str(condensed_orders[2][1]))
-        lbl_burgers.grid(column=3, row=2, sticky="W")
-
-        lbl_fries = Label(text="Fries: " + str(condensed_orders[3][0]) + " - Total Cost: $" + str(condensed_orders[3][1]))
-        lbl_fries.grid(column=3, row=3, sticky="W")
-
-        lbl_sodas = Label(text="Soda: " + str(condensed_orders[4][0]) + " - Total Cost: $" + str(condensed_orders[4][1]))
-        lbl_sodas.grid(column=3, row=4, sticky="W")
-
-        lbl_waters = Label(text="Water: " + str(condensed_orders[5][0]) + " - Total Cost: $" + str(condensed_orders[5][1]))
-        lbl_waters.grid(column=3, row=5, sticky="W")
+        for i, v in enumerate(["Hot Dogs", "Brats", "Hamburgers", "Fries", "Sodas", "Waters"]):
+            newLabel = Label(text=v + ": " + str(condensed_orders[i][0]) + " - Total Cost: $" + str(condensed_orders[i][1]))
+            newLabel.grid(column=3, row=i, sticky="W")
         
         lbl_total = Label(text="Total Cost: $" + str(sum([condensed_orders[i][1] for i in range(6)])))
         lbl_total.grid(column=3, row=6, sticky="W")
@@ -82,60 +63,21 @@ def createTotals():
 
 #Creates the main GUI for the user
 def createRegisterScreen():
-    lbl_hot_dogs = Label(text="Hot dogs - $2.50: ")
-    lbl_hot_dogs.grid(column=0, row=0, sticky="W")
+    items = [StringVar(value="0"), StringVar(value="0"), StringVar(value="0"), StringVar(value="0"), StringVar(value="0"), StringVar(value="0")]
+    for i, v in enumerate(["Hot dogs - $2.50: ", "Brats - $3.50: ", "Hamburgers - $5.00: ", "Fries - $2.00: ", "Sodas - $2.00: ", "Waters - Free:"]):
+            newLabel = Label(text=v)
+            newLabel.grid(column=0, row=i, sticky="W")
 
-    lbl_brats = Label(text="Brats - $3.50: ")
-    lbl_brats.grid(column=0, row=1, sticky="W")
-
-    lbl_burgers = Label(text="Hamburgers - $5.00: ")
-    lbl_burgers.grid(column=0, row=2, sticky="W")
-
-    lbl_fries = Label(text="Fries - $2.00: ")
-    lbl_fries.grid(column=0, row=3, sticky="W")
-
-    lbl_sodas = Label(text="Soda - $2.00: ")
-    lbl_sodas.grid(column=0, row=4, sticky="W")
-
-    lbl_waters = Label(text="Water - Free: ")
-    lbl_waters.grid(column=0, row=5, sticky="W")
-
-    hot_dogs = StringVar(value="0")
-    inp_hot_dogs = Entry(validate='key', textvariable=hot_dogs)
-    inp_hot_dogs["validatecommand"] = (inp_hot_dogs.register(checkIfInteger),'%P')
-    inp_hot_dogs.grid(column=1, row=0)
-
-    brats = StringVar(value="0")
-    inp_brats = Entry(validate='key', textvariable=brats)
-    inp_brats["validatecommand"] = (inp_brats.register(checkIfInteger),'%P')
-    inp_brats.grid(column=1, row=1)
-    
-    burgers = StringVar(value="0")
-    inp_burgers = Entry(validate='key', textvariable=burgers)
-    inp_burgers["validatecommand"] = (inp_burgers.register(checkIfInteger),'%P')
-    inp_burgers.grid(column=1, row=2)
-
-    fries = StringVar(value="0")
-    inp_fries = Entry(validate='key', textvariable=fries)
-    inp_fries["validatecommand"] = (inp_fries.register(checkIfInteger),'%P')
-    inp_fries.grid(column=1, row=3)
-
-    sodas = StringVar(value="0")
-    inp_sodas = Entry(validate='key', textvariable=sodas)
-    inp_sodas["validatecommand"] = (inp_sodas.register(checkIfInteger),'%P')
-    inp_sodas.grid(column=1, row=4)
-
-    waters = StringVar(value="0")
-    inp_waters = Entry(validate='key', textvariable=waters)
-    inp_waters["validatecommand"] = (inp_waters.register(checkIfInteger),'%P')
-    inp_waters.grid(column=1, row=5)
+            newEntry = Entry(validate='key', textvariable=items[i])
+            newEntry["validatecommand"] = (newEntry.register(checkIfInteger),'%P')
+            newEntry.grid(column=1, row=i)
 
     createTotals()
 
-    btn_calculate = Button(text="Calculate", command= lambda: processPurchase([hot_dogs, brats, burgers, fries, sodas, waters]))
+    btn_calculate = Button(text="Calculate", command= lambda: processPurchase(items))
     btn_calculate.grid(column=0, row=7, columnspan=5, sticky="NWES")
 
-    btn_clear = Button(text="Clear", command=lambda: resetStringVars(hot_dogs, brats, burgers, fries, sodas, waters))
+    btn_clear = Button(text="Clear", command=lambda: resetStringVars(items))
     btn_clear.grid(column=0, row=8, columnspan=5, sticky="NWES")
 
     btn_exit = Button(text="Exit", command=exit)
