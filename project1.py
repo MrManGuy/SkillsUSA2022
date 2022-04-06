@@ -101,32 +101,32 @@ def createRegisterScreen():
     lbl_waters.grid(column=0, row=5, sticky="W")
 
     hot_dogs = StringVar(value="0")
-    inp_hot_dogs = Entry(validate='all', textvariable=hot_dogs)
+    inp_hot_dogs = Entry(validate='key', textvariable=hot_dogs)
     inp_hot_dogs["validatecommand"] = (inp_hot_dogs.register(checkIfInteger),'%P')
     inp_hot_dogs.grid(column=1, row=0)
 
     brats = StringVar(value="0")
-    inp_brats = Entry(validate='all', textvariable=brats)
+    inp_brats = Entry(validate='key', textvariable=brats)
     inp_brats["validatecommand"] = (inp_brats.register(checkIfInteger),'%P')
     inp_brats.grid(column=1, row=1)
     
     burgers = StringVar(value="0")
-    inp_burgers = Entry(validate='all', textvariable=burgers)
+    inp_burgers = Entry(validate='key', textvariable=burgers)
     inp_burgers["validatecommand"] = (inp_burgers.register(checkIfInteger),'%P')
     inp_burgers.grid(column=1, row=2)
 
     fries = StringVar(value="0")
-    inp_fries = Entry(validate='all', textvariable=fries)
+    inp_fries = Entry(validate='key', textvariable=fries)
     inp_fries["validatecommand"] = (inp_fries.register(checkIfInteger),'%P')
     inp_fries.grid(column=1, row=3)
 
     sodas = StringVar(value="0")
-    inp_sodas = Entry(validate='all', textvariable=sodas)
+    inp_sodas = Entry(validate='key', textvariable=sodas)
     inp_sodas["validatecommand"] = (inp_sodas.register(checkIfInteger),'%P')
     inp_sodas.grid(column=1, row=4)
 
     waters = StringVar(value="0")
-    inp_waters = Entry(validate='all', textvariable=waters)
+    inp_waters = Entry(validate='key', textvariable=waters)
     inp_waters["validatecommand"] = (inp_waters.register(checkIfInteger),'%P')
     inp_waters.grid(column=1, row=5)
 
