@@ -83,6 +83,9 @@ def createRegisterScreen():
     btn_exit = Button(text="Exit", command=exit)
     btn_exit.grid(column=0, row=9, columnspan=5, sticky="NWES")
 
+    lbl_contestant_number = Label(text="Contestant Number : 1155")
+    lbl_contestant_number.grid(column=0, row=10, columnspan=5, sticky="NEWS")
+
 def main():
     createRegisterScreen()
     register.mainloop()
