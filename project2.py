@@ -6,6 +6,8 @@ grades.title("Grades - 1155")
 #Arrary created with each class in mind to hold the grades for each class
 all_grades = [[], [], [], [], []]
 
+#Input: value of the box that's being edited
+#/out: True if value is between 0 and 100, otherwise returns False
 def checkIfInRange(value):
     if value == "":
         value = 0
@@ -17,8 +19,11 @@ def checkIfInRange(value):
 #Input: value of the box that's being edited
 #Output: True if the value is an float and not negative, False will throw an error if not an float
 def checkIfFloat(value):
+    decimalCount = 0
     for digit in value:
-        if not (digit.isdigit() or digit == "."):
+        if digit == ".":
+            decimalCount += 1
+        if not (digit.isdigit() or digit == ".") or decimalCount >= 2:
             messagebox.showwarning(title=None, message=digit + " is invalid\nQuantity must be a float!")
             return False
 
@@ -27,6 +32,7 @@ def checkIfFloat(value):
     messagebox.showwarning(title=None, message="Quantity must be between 0 and 100")
     return False
 
+#Creates the screen which will display all grade information
 def createOutputs():
     classes_list = ["Art", "History", "Math", "Programming", "Science"]
     
